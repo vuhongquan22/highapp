@@ -1,32 +1,103 @@
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
-
+import { useState } from "react"
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {View,Text,Image,TextInput, FlatList} from 'react-native';
+import {Style} from '../components/style/style'
+import {DISTRICT} from '../components/dummy/district'
+import {Item} from "../components/list/item"
+import {
+  LineChart
+} from "react-native-chart-kit";
+interface Search {
+  text: string
+  districtList: Array<any>,
+}
+import DropDownPicker from 'react-native-dropdown-picker';
 export default function TabOneScreen() {
+  const [districtData, setDistrictData] = useState<any>()
+  const [districtDataSearch, setDistrictDataSearch] = useState<any>()
+  const [searchText, setSearchText] = useState(false)
+  
+  let txtSearch = ''
+
+  /** 
+   * Call API
+   */
+  React.useEffect(() => {
+    callApigetDistrict()
+  }, [])
+  /**
+   * callAPIgetDistrict
+   * @param params 
+   */
+  const callApigetDistrict = async () => {
+    // try {
+    //     const response = await getDistrict()
+    //     setDistrictData(response?.data)
+    //   } catch (e) {
+    // }
+    setDistrictData(DISTRICT)
+    setDistrictDataSearch(DISTRICT)
+}
+const [search, setSearch] = useState<Search>({
+  text: '',
+  districtList: districtData || [],
+})
+
+ /**
+   * handle change search text input
+   * @param text
+   */
+  const handleChangeSearch = (text: string) => {
+    const filterResult = {
+      text: '',
+      districtList: districtData,
+    }
+    if (text.trim() === undefined || text.trim() === '') {
+      setSearchText(false)
+    } else {
+      setSearchText(true)
+      filterResult.districtList = searchdistrictDataInChild(districtData, text)
+    }
+    setSearch({ ...filterResult, text })
+  }
+
+  /**
+   *  searchdistrictDataInChild
+   *
+   * @param districtList
+   * @param inputSearch
+   */
+  const searchdistrictDataInChild = (districtList: Array<any>, inputSearch: string) => {
+    setDistrictDataSearch(districtList.filter(item => item.districtName.includes(inputSearch)))
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.js" />
+    <ScrollView style={Style.title}>
+      {/* <Text style={Style.textTitle2}>APP</Text> */}
+      <View style={Style.searchOfList}>
+        <TextInput
+          value={search.text}
+          placeholder="Bạn muốn tìm kiếm gì?"
+          placeholderTextColor="#B0B0B0"
+          style={Style.textInputSearchOfList}
+          onChangeText={(text) => {
+            txtSearch = text;
+            handleChangeSearch(text)}}
+        />
     </View>
+    <Text style={Style.titleList}>Danh sách các Quận ở Hà Nội</Text>
+    <FlatList
+      data={districtDataSearch}
+      renderItem={({ item }: any) => {
+        return (
+          <>
+          <Item data={item}/>
+          </>
+        )
+      }}
+     />
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
