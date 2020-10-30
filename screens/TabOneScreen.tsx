@@ -31,7 +31,7 @@ export default function TabOneScreen() {
    * @param params 
    */
   const callApigetDistrict = async () => {
-    // try {
+  // try {
     //     const response = await getDistrict()
     //     setDistrictData(response?.data)
     //   } catch (e) {

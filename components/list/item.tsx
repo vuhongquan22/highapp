@@ -26,8 +26,6 @@ data
    * @param districtId Id of district
    */
   const goToItemsDetail = (district: any) => {
-    console.log('idDistrict',district);
-    
     navigation.navigate('Detail', {
       district: district,
     });

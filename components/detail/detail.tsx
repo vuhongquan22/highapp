@@ -34,6 +34,30 @@ export const DetailScreen = (props: any) => {
   }, [])
 
   /**
+   * callApigetDetailDistrict
+   * @param params 
+   */
+    async function callApigetDetailDistrict() {
+    // try {
+    //     const responseData = await getDetailDistrict({ districtId: params?.district?.districtId })
+    //     setDetailDistrictData(responseData?.data)
+    //   } catch (e) {
+    // }
+    setDetailDistrictData(PRICE_DISTRICT)
+    }
+  /**
+   * callApigetDetailDistrict
+   * @param params 
+   */
+    async function callApigetWards() {
+    // try {
+    //     const responseData = await getWards({ districtId: params?.district?.districtId })
+    //     setWardsData(responseData?.data)
+    //   } catch (e) {
+    // }
+    setWardsData(WARDS)
+    }
+/**
    * findPricebyType
    * @param type 
    */
@@ -107,31 +131,6 @@ export const DetailScreen = (props: any) => {
           return null;
         }
   }
-
-  /**
-   * callApigetDetailDistrict
-   * @param params 
-   */
-  async function callApigetDetailDistrict() {
-    // try {
-    //     const responseData = await getDetailDistrict({ districtId: params?.district?.districtId })
-    //     setDetailDistrictData(responseData?.data)
-    //   } catch (e) {
-    // }
-    setDetailDistrictData(PRICE_DISTRICT)
-}
-  /**
-   * callApigetDetailDistrict
-   * @param params 
-   */
-  async function callApigetWards() {
-    // try {
-    //     const responseData = await getWards({ districtId: params?.district?.districtId })
-    //     setWardsData(responseData?.data)
-    //   } catch (e) {
-    // }
-    setWardsData(WARDS)
-}
     return (
         <ScrollView >
             <View style={Style.detailTop}> 
